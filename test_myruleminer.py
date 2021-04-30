@@ -22,6 +22,7 @@ def test_association_rule_miner_fit():
     rules = marm.fit(transactions)
     print()
     marm.print_association_rules()
+    print(rules)
 
     # Find all rules for S = {b,c,m} and compute confidence. Keep rules assuming $minconf$ = 80%.
     assert(rules[0]["lhs"] == ['c', 'm'])
@@ -98,3 +99,24 @@ def test_association_rule_miner_fit():
     assert(rules[4]["lhs"] == ['att2=yes'])
     assert(rules[4]["rhs"] == ['att4=True'])
     assert(round((rules[4]["confidence"]), 2) == 0.86)
+
+    
+    interview_rules = [
+        {'lhs': ['att4=False'], 'rhs': ['att2=no'], 'confidence': 4/5, 'support': 4/14, 'lift': (4/14)/((5/14) * (7/14))},
+        {'lhs': ['att0=Mid'], 'rhs': ['att4=True'], 'confidence': 4/4, 'support': 4/14, 'lift': (4/14)/((4/14) * (9/14))},
+        {'lhs': ['att2=yes'], 'rhs': ['att4=True'], 'confidence': 6/7, 'support': 6/14, 'lift': (6/14)/((7/14) * (9/14))},
+        {'lhs': ['att1=R'], 'rhs': ['att2=yes'], 'confidence': 4/4, 'support': 4/14, 'lift': (4/14)/((4/14) * (7/14))},
+        {'lhs': ['att2=yes', 'att3=no'], 'rhs': ['att4=True'], 'confidence': 4/4, 'support': 4/14, 'lift': (4/14)/((4/14) * (9/14))}
+    ]
+
+    market_object = MyAssociationRuleMiner()
+    market_object.fit(transactions)
+    interview_object = MyAssociationRuleMiner()
+    interview_object.fit(table)
+
+    interview_count = 0
+    for rule in interview_rules:
+        if rule in interview_object.rules:
+            interview_count += 1
+            
+    assert(interview_count == len(interview_rules))
