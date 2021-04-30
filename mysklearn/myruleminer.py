@@ -1,4 +1,14 @@
+##############################################
+# Programmer: Carter Mooring
+# Class: CPCS 322-02, Spring 2021
+# Programming Assignment #7
+# April 29th, 2021
+# 
+# Description: 
+##############################################
+
 import mysklearn.myutils as myutils
+from tabulate import tabulate
 
 class MyAssociationRuleMiner:
     """Represents an association rule miner.
@@ -42,7 +52,21 @@ class MyAssociationRuleMiner:
                     before fit() is called (e.g. "att=val", ...).
                 Make sure a rule does not include the same attribute more than once
         """
-        pass # TODO: fix this
+        self.X_train = X_train
+        tag = None
+
+        # some attributes have similar value names, if so we need to assign attribute tags to their values
+        if(myutils.att_necessary(X_train)): 
+            tag = ['att'+str(i) for i in range(len(X_train[0]))] # attach att# tag to front
+            myutils.prepend_attribute_label(X_train, tag)
+        
+        self.rules = myutils.apriori(X_train, self.minsup, self.minconf)
+
+        # compute the rules confidence, support, lift
+        for rule in self.rules:
+            myutils.interestingness_measure(rule, X_train)
+
+        return self.rules
 
     def print_association_rules(self):
         """Prints the association rules in the format "IF val AND ... THEN val AND...", one rule on each line.
@@ -51,4 +75,12 @@ class MyAssociationRuleMiner:
             Each rule's output should include an identifying number, the rule, the rule's support, the rule's confidence, and the rule's lift 
             Consider using the tabulate library to help with this: https://pypi.org/project/tabulate/
         """
-        pass # TODO: fix this
+        header = ["Number", "Association Rule", "Support", "Confidence", "Lift"]
+        table = []
+
+        # iterate through all the rules
+        for i in range(len(self.rules)):
+            row = myutils.ruleMine_pretty_print(self.rules[i], (i + 1))
+            table.append(row)
+
+        print(tabulate(table, headers=header))
