@@ -1,8 +1,8 @@
 # Association Rule Mining  
 
 # Refer to the .ipynb files for detailed information in MarkDown (links below)
-[Auto Data](https://github.com/CarterKekoa/DecisionTree/blob/master/pa6-auto.ipynb)  
-[Titanic Data](https://github.com/CarterKekoa/DecisionTree/blob/master/pa6-titanic.ipynb)
+[Mushroom Data](https://github.com/CarterKekoa/AssociationRuleMining/blob/master/pa7-mushroom.ipynb)  
+[Titanic Data](https://github.com/CarterKekoa/AssociationRuleMining/blob/master/pa7-titanic.ipynb)
 
 # README !!!
 
